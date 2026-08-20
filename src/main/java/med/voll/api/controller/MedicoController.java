@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import jakarta.transaction.Transactional;
 import med.voll.api.dto.medico.DadosCadastroMedicoDTO;
 import med.voll.api.model.Medico;
 import med.voll.api.repository.MedicoRepository;
@@ -17,6 +18,7 @@ public class MedicoController {
     private MedicoRepository medicoRepository;
 
     @PostMapping
+    @Transactional
     public void cadastrar(@RequestBody DadosCadastroMedicoDTO dados) {  //eu recebo por parametro um DTO e converto para um objeto do tipo medico
         medicoRepository.save(new Medico(dados));
     }
