@@ -2,6 +2,7 @@ package med.voll.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import med.voll.api.dto.medico.DadosAlterarMedicoDTO;
 import med.voll.api.dto.medico.DadosCadastroMedicoDTO;
 import med.voll.api.dto.medico.DadosListagemMedicoDTO;
 import med.voll.api.model.Medico;
@@ -28,7 +29,21 @@ public class MedicoController {
     @GetMapping
     public Page<DadosListagemMedicoDTO> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) { //converto uma lista de medico para uma lista de DadosListagemMedico
         return medicoRepository
-                .findAll(paginacao)
+                .findAllByAtivoTrue(paginacao)
                 .map(DadosListagemMedicoDTO::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizar(@RequestBody @Valid DadosAlterarMedicoDTO dados) {
+        var medico = medicoRepository.getReferenceById(dados.id()); //carregando o medico pelo ID
+        medico.atualizarInformacoes(dados); //chamando o método para atualizar os dados baseado no DTO
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id) {
+        var medico = medicoRepository.getReferenceById(id);
+        medico.excluir();
     }
 }
