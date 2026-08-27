@@ -9,24 +9,24 @@ import med.voll.api.dto.endereco.DadosEnderecoDTO;
 
 public record DadosCadastroMedicoDTO(
 
-        @NotBlank
+        @NotBlank(message = "Nome é obrigatório")
         String nome,
 
-        @NotBlank
+        @NotBlank(message = "Email é obrigatório")
         @Email
         String email,
 
-        @NotBlank
+        @NotBlank(message = "Telefone é obrigatório")
         String telefone,
 
-        @NotBlank
+        @NotBlank(message = "CRM é obrigatório")
         @Pattern(regexp = "\\d{4,6}")
         String crm,
 
-        @NotNull
+        @NotNull(message = "Especialidade é obrigatória")
         Especialidade especialidade,
 
-        @NotNull
+        @NotNull(message = "Dados do endereço são obrigatórios")
         @Valid
         DadosEnderecoDTO endereco
 ) {
