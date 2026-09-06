@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import med.voll.api.model.usuario.Usuario;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -14,9 +15,12 @@ import java.util.Date;
 @Service
 public class TokenService {
 
+    @Value("${api.security.token.secret}") //anotação para ler do application.properties
+    private String secret;
+
     public String gerarToken(Usuario usuario) {
         try {
-            var algoritmo = Algorithm.HMAC256("123456"); //senha para fazer a geração do token --- String
+            var algoritmo = Algorithm.HMAC256(secret); //senha para fazer a geração do token --- String
             return JWT.create()
                     .withIssuer("API Voll.med") //Identificar a api dona responsavel pela geração do token -- vai dentro do token
                     .withSubject(usuario.getLogin()) //pertence a qual usuário
